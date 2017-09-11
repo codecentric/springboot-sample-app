@@ -16,6 +16,10 @@
 package de.codecentric.springbootsample;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
     private RecordRepository repository;
+    private String valueVolume, valueDb;
 
     @Autowired
     public HomeController(RecordRepository repository) {
@@ -39,19 +44,21 @@ public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String home(ModelMap model) {
-        List<Record> records = repository.findAll();
-        model.addAttribute("records", records);
-        model.addAttribute("insertRecord", new Record());
+        model.addAttribute("env", System.getenv("ENVIRONMENT_VARIABLE"));
+        model.addAttribute("configmap", System.getenv("CONFIG_MAP"));
+        model.addAttribute("secret", System.getenv("SECRET"));
+        try {
+            valueVolume = readFile("/etc/config/httpd.conf", Charset.defaultCharset());
+        } catch (IOException e) {
+            valueVolume = "can't fetch file from volume";
+        }
+        model.addAttribute("volume", valueVolume);
+
         return "home";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String insertData(ModelMap model, 
-                             @ModelAttribute("insertRecord") @Valid Record record,
-                             BindingResult result) {
-        if (!result.hasErrors()) {
-            repository.save(record);
-        }
-        return home(model);
+    String readFile(String path, Charset encoding) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
     }
 }

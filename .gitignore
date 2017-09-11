@@ -7,4 +7,5 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 
-
+.idea
+springboot-sample-app.iml
