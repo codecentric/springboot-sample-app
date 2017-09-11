@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
     private RecordRepository repository;
-    private String valueVolume, valueDb;
+    private String valueVolume;
 
     @Autowired
     public HomeController(RecordRepository repository) {
