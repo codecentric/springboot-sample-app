@@ -16,51 +16,31 @@
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{project.name}">Sample App</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Spring Boot Configuration Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
 </head>
 <body>
 <div class="container">
     <div class="page-header">
-        <h1 th:text="#{project.name}">Sample App</h1>
-        <p class="lead">Demo application for showing how to run a <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> application on <a href="https://openshift.com">OpenShift</a>.</p>
-        <p>The code is open source at <a href="https://github.com/codecentric/springboot-sample-app">GitHub</a>. You're currently looking at version <span th:text="#{project.version}">0.0.1</span>.</p>
+        <h1>Spring Boot Configuration Demo</h1>
+        <p class="lead">Demo application using <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> for
+            deployment on <a href="https://openshift.com">OpenShift</a>.</p>
     </div>
-
-    <div class="row">
-        <div class="col-md-12 col-lg-6">
-            <form th:object="${insertRecord}" method="POST">
-                <div class="form-group">
-                    <label for="data">Record to insert</label>
-                    <input id="data" type="text" class="form-control" placeholder="Lorem ipsum" th:field="*{data}" />
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
-        </div>
-    </div>
-
-    <hr />
-    <div class="row">
-        <div class="col-sm-12">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Records</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="record : ${records}">
-                        <td th:text="${record.data}">Some text</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <p><img th:src="@{/images/config.png}" alt="diagram depicting configuration options"/></p>
+    <h4>Static configuration</h4>
+    <p><strong>Stored in environment variables at deployment time</strong></p>
+    <p>Environment variable: <span th:text="${env}"></span></p>
+    <p>ConfigMap: <span th:text="${configmap}"></span></p>
+    <p>Secret: <span th:text="${secret}"></span></p>
+    <h4>Dynamic configuration <button class="btn btn-primary" onclick="window.location.reload()"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
+    </h4>
+    <p>ConfigMap mounted as a volume:</p>
+    <pre th:text="${volume}"></pre>
 </div>
 
 <!-- Latest compiled and minified JavaScript -->
